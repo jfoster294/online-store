@@ -1,1 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Online Store | Joel Foster</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div class="top-bar">
+        <div>
+          <p class="eyebrow">Online Store</p>
+          <h1>ShopFlow Store</h1>
+          <p>Browse products, choose options, add items to your cart, and save your cart locally.</p>
+        </div>
+
+        <div class="theme-control">
+          <label for="themeSelect">Theme</label>
+          <select id="themeSelect">
+            <option value="modern">Modern Store</option>
+            <option value="luxury">Black Luxury</option>
+            <option value="neon">Neon Market</option>
+            <option value="boutique">Warm Boutique</option>
+            <option value="clean">Clean Apple</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <section class="store-tools">
+      <input type="text" id="searchInput" placeholder="Search products" />
+
+      <select id="categoryFilter">
+        <option value="All">All Categories</option>
+        <option value="Tech">Tech</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Home">Home</option>
+        <option value="Fitness">Fitness</option>
+      </select>
+
+      <button id="cartButton" type="button">
+        Cart <span id="cartCount">0</span>
+      </button>
+    </section>
+
+    <section class="store-layout">
+      <section>
+        <div class="section-heading">
+          <h2>Products</h2>
+          <p id="productCount">0 products</p>
+        </div>
+
+        <div id="productsGrid" class="products-grid"></div>
+
+        <div id="emptyProducts" class="empty-state hidden">
+          <h3>No products found</h3>
+          <p>Try a different search or category.</p>
+        </div>
+      </section>
+
+      <aside id="cartPanel" class="cart-panel">
+        <div class="cart-header">
+          <div>
+            <h2>Your Cart</h2>
+            <p id="cartMessage">No items yet.</p>
+          </div>
+
+          <button id="clearCartButton" class="danger-button" type="button">Clear</button>
+        </div>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="cart-total">
+          <p>Total</p>
+          <h3 id="cartTotal">$0.00</h3>
+        </div>
+
+        <button id="checkoutButton" class="checkout-button" type="button">Checkout Demo</button>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
