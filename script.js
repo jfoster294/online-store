@@ -1,364 +1,479 @@
-const productsGrid = document.getElementById("productsGrid");
-const productCount = document.getElementById("productCount");
-const emptyProducts = document.getElementById("emptyProducts");
-
-const searchInput = document.getElementById("searchInput");
-const categoryFilter = document.getElementById("categoryFilter");
-const cartButton = document.getElementById("cartButton");
-const cartCount = document.getElementById("cartCount");
-
-const cartPanel = document.getElementById("cartPanel");
-const cartItems = document.getElementById("cartItems");
-const cartMessage = document.getElementById("cartMessage");
-const cartTotal = document.getElementById("cartTotal");
-const clearCartButton = document.getElementById("clearCartButton");
-const checkoutButton = document.getElementById("checkoutButton");
-
-const themeSelect = document.getElementById("themeSelect");
+const TAX_RATE = 0.065;
+const CART_KEY = "restaurantOnlineStoreCart";
 
 const products = [
   {
     id: 1,
-    name: "Wireless Headphones",
-    category: "Tech",
-    price: 79.99,
-    rating: "4.8",
-    icon: "🎧",
-    description: "Comfortable wireless headphones with deep sound and long battery life.",
-    colors: ["Black", "Silver", "Blue"],
-    sizes: ["Standard"]
+    name: "Classic Burger",
+    category: "Burgers",
+    price: 10.99,
+    image: "🍔",
+    description: "Beef patty, cheddar, lettuce, tomato, pickles, and house sauce.",
+    tags: ["Popular", "Fresh"]
   },
   {
     id: 2,
-    name: "Mechanical Keyboard",
-    category: "Tech",
-    price: 119.99,
-    rating: "4.7",
-    icon: "⌨️",
-    description: "A responsive keyboard built for coding, gaming, and long work sessions.",
-    colors: ["Black", "White"],
-    sizes: ["Full Size", "Tenkeyless"]
+    name: "Spicy Chicken Sandwich",
+    category: "Burgers",
+    price: 10.99,
+    image: "🍔",
+    description: "Crispy spicy chicken, slaw, pickles, and spicy mayo.",
+    tags: ["Spicy", "Popular"]
   },
   {
     id: 3,
-    name: "Everyday Hoodie",
-    category: "Clothing",
-    price: 49.99,
-    rating: "4.6",
-    icon: "🧥",
-    description: "Soft daily hoodie with a clean fit for casual wear.",
-    colors: ["Black", "Gray", "Navy"],
-    sizes: ["S", "M", "L", "XL"]
+    name: "Taco Trio",
+    category: "Tacos",
+    price: 11.99,
+    image: "🌮",
+    description: "Three street tacos with your choice of protein and salsa.",
+    tags: ["Popular"]
   },
   {
     id: 4,
-    name: "Desk Lamp",
-    category: "Home",
-    price: 34.99,
-    rating: "4.5",
-    icon: "💡",
-    description: "Minimal desk lamp with adjustable brightness for focused work.",
-    colors: ["White", "Black"],
-    sizes: ["Standard"]
+    name: "Family Taco Combo",
+    category: "Combos",
+    price: 17.99,
+    image: "🌮",
+    description: "Tacos, chips, salsa, and two drinks. Perfect for sharing.",
+    tags: ["Best Value"]
   },
   {
     id: 5,
-    name: "Running Shoes",
-    category: "Fitness",
-    price: 89.99,
-    rating: "4.7",
-    icon: "👟",
-    description: "Lightweight shoes made for walking, running, and everyday movement.",
-    colors: ["Black", "Red", "Blue"],
-    sizes: ["8", "9", "10", "11", "12"]
+    name: "Chicken Rice Bowl",
+    category: "Bowls",
+    price: 11.49,
+    image: "🍲",
+    description: "Grilled chicken, rice, black beans, corn, pico, and lime crema.",
+    tags: ["Protein"]
   },
   {
     id: 6,
-    name: "Smart Watch",
-    category: "Tech",
-    price: 149.99,
-    rating: "4.9",
-    icon: "⌚",
-    description: "Track workouts, notifications, sleep, and daily activity.",
-    colors: ["Black", "Silver", "Gold"],
-    sizes: ["Small", "Large"]
+    name: "Veggie Bowl",
+    category: "Bowls",
+    price: 9.99,
+    image: "🥗",
+    description: "Rice, roasted vegetables, avocado, beans, and citrus dressing.",
+    tags: ["Vegetarian"]
+  },
+  {
+    id: 7,
+    name: "Loaded Fries",
+    category: "Sides",
+    price: 5.49,
+    image: "🍟",
+    description: "Crispy fries with cheese sauce, bacon bits, scallions, and sour cream.",
+    tags: ["Shareable"]
+  },
+  {
+    id: 8,
+    name: "Chicken Quesadilla",
+    category: "Combos",
+    price: 8.99,
+    image: "🫓",
+    description: "Grilled chicken, cheese, peppers, onions, and sour cream.",
+    tags: ["Quick Bite"]
+  },
+  {
+    id: 9,
+    name: "Fresh Lemonade",
+    category: "Drinks",
+    price: 3.49,
+    image: "🥤",
+    description: "Fresh-squeezed lemonade served ice cold.",
+    tags: ["Refreshing"]
+  },
+  {
+    id: 10,
+    name: "Iced Tea",
+    category: "Drinks",
+    price: 2.99,
+    image: "🧋",
+    description: "Cold brewed tea with lemon and optional sweetener.",
+    tags: ["Classic"]
+  },
+  {
+    id: 11,
+    name: "Chocolate Lava Cake",
+    category: "Desserts",
+    price: 6.49,
+    image: "🍫",
+    description: "Warm chocolate cake with a soft center and vanilla cream.",
+    tags: ["Sweet"]
+  },
+  {
+    id: 12,
+    name: "Churro Bites",
+    category: "Desserts",
+    price: 4.99,
+    image: "🍩",
+    description: "Warm cinnamon churro bites with dipping sauce.",
+    tags: ["Sweet"]
   }
 ];
 
-let cart = JSON.parse(localStorage.getItem("onlineStoreCart")) || [];
+let cart = loadCart();
 
-const themeClasses = [
-  "theme-modern",
-  "theme-luxury",
-  "theme-neon",
-  "theme-boutique",
-  "theme-clean"
-];
+const productGrid = document.getElementById("productGrid");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const sortSelect = document.getElementById("sortSelect");
 
-themeSelect.addEventListener("change", function () {
-  applyTheme(themeSelect.value);
+const cartItems = document.getElementById("cartItems");
+const subtotalText = document.getElementById("subtotalText");
+const taxText = document.getElementById("taxText");
+const totalText = document.getElementById("totalText");
+const navCartCount = document.getElementById("navCartCount");
+
+const clearCartButton = document.getElementById("clearCartButton");
+const cartJumpButton = document.getElementById("cartJumpButton");
+const checkoutForm = document.getElementById("checkoutForm");
+
+const customerName = document.getElementById("customerName");
+const customerPhone = document.getElementById("customerPhone");
+const pickupTime = document.getElementById("pickupTime");
+
+const successModal = document.getElementById("successModal");
+const successMessage = document.getElementById("successMessage");
+const closeModalButton = document.getElementById("closeModalButton");
+
+renderProducts();
+renderCart();
+
+searchInput.addEventListener("input", renderProducts);
+categoryFilter.addEventListener("change", renderProducts);
+sortSelect.addEventListener("change", renderProducts);
+
+cartJumpButton.addEventListener("click", () => {
+  document.getElementById("cart").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 });
 
-searchInput.addEventListener("input", function () {
-  renderProducts();
-});
-
-categoryFilter.addEventListener("change", function () {
-  renderProducts();
-});
-
-productsGrid.addEventListener("click", function (event) {
-  if (event.target.classList.contains("add-button")) {
-    const productId = Number(event.target.dataset.id);
-    addToCart(productId);
-  }
-});
-
-cartItems.addEventListener("click", function (event) {
-  const cartId = event.target.dataset.id;
-
-  if (event.target.classList.contains("increase-button")) {
-    updateCartQuantity(cartId, 1);
-  }
-
-  if (event.target.classList.contains("decrease-button")) {
-    updateCartQuantity(cartId, -1);
-  }
-
-  if (event.target.classList.contains("remove-button")) {
-    removeFromCart(cartId);
-  }
-});
-
-clearCartButton.addEventListener("click", function () {
+clearCartButton.addEventListener("click", () => {
   if (cart.length === 0) {
     return;
   }
 
-  const confirmClear = confirm("Clear all items from your cart?");
+  const confirmed = confirm("Clear your cart?");
 
-  if (confirmClear) {
-    cart = [];
-    saveCart();
-    renderCart();
-  }
-});
-
-checkoutButton.addEventListener("click", function () {
-  if (cart.length === 0) {
-    alert("Your cart is empty.");
+  if (!confirmed) {
     return;
   }
 
-  alert("Checkout demo complete. This front-end project does not process real payments.");
+  cart = [];
+  saveCart();
+  renderCart();
 });
 
-cartButton.addEventListener("click", function () {
-  cartPanel.scrollIntoView({ behavior: "smooth" });
+cartItems.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+
+  if (!button) {
+    return;
+  }
+
+  const productId = Number(button.dataset.id);
+  const action = button.dataset.action;
+
+  if (action === "increase") {
+    increaseQuantity(productId);
+  }
+
+  if (action === "decrease") {
+    decreaseQuantity(productId);
+  }
+
+  if (action === "remove") {
+    removeFromCart(productId);
+  }
 });
 
-function applyTheme(theme) {
-  document.body.classList.remove(...themeClasses);
-  document.body.classList.add(`theme-${theme}`);
-  localStorage.setItem("selectedOnlineStoreTheme", theme);
-}
+checkoutForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  if (cart.length === 0) {
+    alert("Please add at least one item to your cart before placing an order.");
+    return;
+  }
+
+  const totals = getCartTotals();
+  const itemCount = getCartCount();
+
+  successMessage.textContent =
+    `Thanks ${customerName.value.trim()}! Your pickup order for ${itemCount} item(s) has been placed for ${pickupTime.value}. Total: $${totals.total.toFixed(2)}. We will text updates to ${customerPhone.value.trim()}.`;
+
+  successModal.classList.remove("hidden");
+
+  cart = [];
+  saveCart();
+  renderCart();
+  checkoutForm.reset();
+});
+
+closeModalButton.addEventListener("click", closeModal);
+
+successModal.addEventListener("click", (event) => {
+  if (event.target === successModal) {
+    closeModal();
+  }
+});
 
 function renderProducts() {
-  productsGrid.innerHTML = "";
+  const filteredProducts = getFilteredProducts();
 
-  const searchText = searchInput.value.toLowerCase().trim();
-  const selectedCategory = categoryFilter.value;
-
-  const filteredProducts = products.filter(function (product) {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchText) ||
-      product.description.toLowerCase().includes(searchText) ||
-      product.category.toLowerCase().includes(searchText);
-
-    const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
-
-  productCount.textContent = `${filteredProducts.length} products`;
+  productGrid.innerHTML = "";
 
   if (filteredProducts.length === 0) {
-    emptyProducts.classList.remove("hidden");
+    productGrid.innerHTML = `
+      <div class="empty-cart">
+        <strong>No items found.</strong>
+        <p>Try a different search or category.</p>
+      </div>
+    `;
     return;
   }
 
-  emptyProducts.classList.add("hidden");
-
-  filteredProducts.forEach(function (product) {
+  filteredProducts.forEach((product) => {
     const card = document.createElement("article");
     card.className = "product-card";
 
     card.innerHTML = `
-      <div class="product-image">${product.icon}</div>
+      <div class="product-image">${product.image}</div>
 
       <div class="product-content">
-        <p class="product-category">${product.category}</p>
         <h3>${product.name}</h3>
-        <p class="product-description">${product.description}</p>
+        <p>${product.description}</p>
 
-        <div class="product-meta">
-          <p class="price">$${product.price.toFixed(2)}</p>
-          <p class="rating">⭐ ${product.rating}</p>
+        <div class="product-tags">
+          <span class="product-tag">${product.category}</span>
+          ${product.tags.map((tag) => `<span class="product-tag">${tag}</span>`).join("")}
         </div>
 
-        <div class="product-options">
-          <select id="color-${product.id}">
-            ${product.colors.map(function (color) {
-              return `<option value="${color}">${color}</option>`;
-            }).join("")}
-          </select>
-
-          <select id="size-${product.id}">
-            ${product.sizes.map(function (size) {
-              return `<option value="${size}">${size}</option>`;
-            }).join("")}
-          </select>
-
-          <input class="quantity-input" id="quantity-${product.id}" type="number" min="1" value="1" />
+        <div class="product-footer">
+          <span class="price">$${product.price.toFixed(2)}</span>
+          <button class="add-button" type="button" data-id="${product.id}">
+            Add to Cart
+          </button>
         </div>
-
-        <button class="add-button" data-id="${product.id}" type="button">Add to Cart</button>
       </div>
     `;
 
-    productsGrid.appendChild(card);
+    const addButton = card.querySelector(".add-button");
+
+    addButton.addEventListener("click", () => {
+      addToCart(product.id);
+    });
+
+    productGrid.appendChild(card);
   });
 }
 
-function addToCart(productId) {
-  const product = products.find(function (item) {
-    return item.id === productId;
+function getFilteredProducts() {
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  const selectedCategory = categoryFilter.value;
+  const selectedSort = sortSelect.value;
+
+  let filtered = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory === "All" || product.category === selectedCategory;
+
+    const matchesSearch = `
+      ${product.name}
+      ${product.description}
+      ${product.category}
+      ${product.tags.join(" ")}
+    `.toLowerCase().includes(searchTerm);
+
+    return matchesCategory && matchesSearch;
   });
 
-  const colorSelect = document.getElementById(`color-${productId}`);
-  const sizeSelect = document.getElementById(`size-${productId}`);
-  const quantityInput = document.getElementById(`quantity-${productId}`);
-
-  const selectedColor = colorSelect.value;
-  const selectedSize = sizeSelect.value;
-  const selectedQuantity = Number(quantityInput.value);
-
-  if (selectedQuantity < 1) {
-    return;
+  if (selectedSort === "priceLow") {
+    filtered.sort((a, b) => a.price - b.price);
   }
 
-  const cartId = `${productId}-${selectedColor}-${selectedSize}`;
+  if (selectedSort === "priceHigh") {
+    filtered.sort((a, b) => b.price - a.price);
+  }
 
-  const existingItem = cart.find(function (item) {
-    return item.cartId === cartId;
-  });
+  if (selectedSort === "nameAZ") {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  return filtered;
+}
+
+function addToCart(productId) {
+  const existingItem = cart.find((item) => item.id === productId);
 
   if (existingItem) {
-    existingItem.quantity += selectedQuantity;
+    existingItem.quantity += 1;
   } else {
     cart.push({
-      cartId: cartId,
-      productId: product.id,
-      name: product.name,
-      price: product.price,
-      icon: product.icon,
-      color: selectedColor,
-      size: selectedSize,
-      quantity: selectedQuantity
+      id: productId,
+      quantity: 1
     });
   }
 
   saveCart();
   renderCart();
-  quantityInput.value = 1;
+}
+
+function increaseQuantity(productId) {
+  const item = cart.find((cartItem) => cartItem.id === productId);
+
+  if (!item) {
+    return;
+  }
+
+  item.quantity += 1;
+  saveCart();
+  renderCart();
+}
+
+function decreaseQuantity(productId) {
+  const item = cart.find((cartItem) => cartItem.id === productId);
+
+  if (!item) {
+    return;
+  }
+
+  item.quantity -= 1;
+
+  if (item.quantity <= 0) {
+    cart = cart.filter((cartItem) => cartItem.id !== productId);
+  }
+
+  saveCart();
+  renderCart();
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter((cartItem) => cartItem.id !== productId);
+  saveCart();
+  renderCart();
 }
 
 function renderCart() {
   cartItems.innerHTML = "";
 
-  const totalItems = cart.reduce(function (sum, item) {
-    return sum + item.quantity;
-  }, 0);
-
-  cartCount.textContent = totalItems;
-
   if (cart.length === 0) {
-    cartMessage.textContent = "No items yet.";
-    cartTotal.textContent = "$0.00";
-    return;
-  }
-
-  cartMessage.textContent = `${totalItems} item${totalItems === 1 ? "" : "s"} in cart`;
-
-  cart.forEach(function (item) {
-    const cartItem = document.createElement("article");
-    cartItem.className = "cart-item";
-
-    cartItem.innerHTML = `
-      <div class="cart-item-top">
-        <div>
-          <p class="cart-item-title">${item.icon} ${item.name}</p>
-          <p class="cart-item-options">${item.color} • ${item.size}</p>
-        </div>
-
-        <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
-      </div>
-
-      <div class="cart-actions">
-        <button class="quantity-button decrease-button" data-id="${item.cartId}" type="button">-</button>
-        <span>${item.quantity}</span>
-        <button class="quantity-button increase-button" data-id="${item.cartId}" type="button">+</button>
-        <button class="remove-button" data-id="${item.cartId}" type="button">Remove</button>
+    cartItems.innerHTML = `
+      <div class="empty-cart">
+        <strong>Your cart is empty.</strong>
+        <p>Add restaurant items from the store menu.</p>
       </div>
     `;
+  } else {
+    cart.forEach((cartItem) => {
+      const product = products.find((item) => item.id === cartItem.id);
 
-    cartItems.appendChild(cartItem);
-  });
+      if (!product) {
+        return;
+      }
 
-  const total = cart.reduce(function (sum, item) {
-    return sum + item.price * item.quantity;
-  }, 0);
+      const itemTotal = product.price * cartItem.quantity;
 
-  cartTotal.textContent = `$${total.toFixed(2)}`;
+      const itemElement = document.createElement("div");
+      itemElement.className = "cart-item";
+
+      itemElement.innerHTML = `
+        <div class="cart-item-image">${product.image}</div>
+
+        <div>
+          <h4>${product.name}</h4>
+          <small>$${product.price.toFixed(2)} each</small>
+
+          <div class="quantity-controls">
+            <button class="qty-button" type="button" data-action="decrease" data-id="${product.id}">
+              -
+            </button>
+
+            <span class="qty-number">${cartItem.quantity}</span>
+
+            <button class="qty-button" type="button" data-action="increase" data-id="${product.id}">
+              +
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <strong>$${itemTotal.toFixed(2)}</strong>
+
+          <button class="remove-button" type="button" data-action="remove" data-id="${product.id}">
+            Remove
+          </button>
+        </div>
+      `;
+
+      cartItems.appendChild(itemElement);
+    });
+  }
+
+  const totals = getCartTotals();
+
+  subtotalText.textContent = `$${totals.subtotal.toFixed(2)}`;
+  taxText.textContent = `$${totals.tax.toFixed(2)}`;
+  totalText.textContent = `$${totals.total.toFixed(2)}`;
+  navCartCount.textContent = getCartCount();
 }
 
-function updateCartQuantity(cartId, change) {
-  cart = cart.map(function (item) {
-    if (item.cartId === cartId) {
-      return {
-        ...item,
-        quantity: item.quantity + change
-      };
+function getCartTotals() {
+  const subtotal = cart.reduce((sum, cartItem) => {
+    const product = products.find((item) => item.id === cartItem.id);
+
+    if (!product) {
+      return sum;
     }
 
-    return item;
-  });
+    return sum + product.price * cartItem.quantity;
+  }, 0);
 
-  cart = cart.filter(function (item) {
-    return item.quantity > 0;
-  });
+  const tax = subtotal * TAX_RATE;
+  const total = subtotal + tax;
 
-  saveCart();
-  renderCart();
+  return {
+    subtotal,
+    tax,
+    total
+  };
 }
 
-function removeFromCart(cartId) {
-  cart = cart.filter(function (item) {
-    return item.cartId !== cartId;
-  });
-
-  saveCart();
-  renderCart();
+function getCartCount() {
+  return cart.reduce((sum, cartItem) => {
+    return sum + cartItem.quantity;
+  }, 0);
 }
 
 function saveCart() {
-  localStorage.setItem("onlineStoreCart", JSON.stringify(cart));
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
-const savedTheme = localStorage.getItem("selectedOnlineStoreTheme") || "modern";
-themeSelect.value = savedTheme;
-applyTheme(savedTheme);
+function loadCart() {
+  const savedCart = localStorage.getItem(CART_KEY);
 
-renderProducts();
-renderCart();
+  if (!savedCart) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(savedCart);
+  } catch (error) {
+    console.error("Could not load cart:", error);
+    return [];
+  }
+}
+
+function closeModal() {
+  successModal.classList.add("hidden");
+}
+
+function escapeHTML(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
