@@ -4,85 +4,209 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Online Store | Joel Foster</title>
+  <title>Restaurant Online Store | QuickBite</title>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="hero">
-      <div class="top-bar">
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="logo-area">
+        <div class="logo-icon">🍔</div>
         <div>
-          <p class="eyebrow">Online Store</p>
-          <h1>ShopFlow Store</h1>
-          <p>Browse products, choose options, add items to your cart, and save your cart locally.</p>
-        </div>
-
-        <div class="theme-control">
-          <label for="themeSelect">Theme</label>
-          <select id="themeSelect">
-            <option value="modern">Modern Store</option>
-            <option value="luxury">Black Luxury</option>
-            <option value="neon">Neon Market</option>
-            <option value="boutique">Warm Boutique</option>
-            <option value="clean">Clean Apple</option>
-          </select>
+          <h1>QuickBite Store</h1>
+          <p>Restaurant online ordering</p>
         </div>
       </div>
-    </header>
 
-    <section class="store-tools">
-      <input type="text" id="searchInput" placeholder="Search products" />
+      <div class="nav-actions">
+        <a href="#menu">Menu</a>
+        <a href="#cart">Cart</a>
+        <a href="#checkout">Checkout</a>
 
-      <select id="categoryFilter">
-        <option value="All">All Categories</option>
-        <option value="Tech">Tech</option>
-        <option value="Clothing">Clothing</option>
-        <option value="Home">Home</option>
-        <option value="Fitness">Fitness</option>
-      </select>
+        <button id="cartJumpButton" class="cart-jump-button" type="button">
+          Cart <span id="navCartCount">0</span>
+        </button>
+      </div>
+    </nav>
 
-      <button id="cartButton" type="button">
-        Cart <span id="cartCount">0</span>
-      </button>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">Fresh Meals • Simple Ordering • Fast Pickup</p>
+        <h2>Order your favorite restaurant meals online.</h2>
+        <p>
+          Browse the menu, add items to your cart, choose a pickup time,
+          and place a demo order in just a few clicks.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#menu" class="primary-link">Shop Menu</a>
+          <a href="#cart" class="secondary-link">View Cart</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-food">🍟</div>
+        <h3>Today’s Favorite</h3>
+        <p>Loaded fries, burgers, tacos, bowls, drinks, and desserts.</p>
+      </div>
+    </section>
+  </header>
+
+  <main class="main-layout">
+    <section id="menu" class="store-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Online Store</p>
+          <h2>Shop The Menu</h2>
+        </div>
+
+        <p class="section-note">
+          Search, filter, and add meals to your cart.
+        </p>
+      </div>
+
+      <div class="store-controls">
+        <div class="search-box">
+          <span>🔎</span>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search burgers, tacos, drinks..."
+          />
+        </div>
+
+        <select id="categoryFilter">
+          <option value="All">All Categories</option>
+          <option value="Combos">Combos</option>
+          <option value="Burgers">Burgers</option>
+          <option value="Tacos">Tacos</option>
+          <option value="Bowls">Bowls</option>
+          <option value="Sides">Sides</option>
+          <option value="Drinks">Drinks</option>
+          <option value="Desserts">Desserts</option>
+        </select>
+
+        <select id="sortSelect">
+          <option value="popular">Sort: Popular</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="nameAZ">Name: A-Z</option>
+        </select>
+      </div>
+
+      <div id="productGrid" class="product-grid"></div>
     </section>
 
-    <section class="store-layout">
-      <section>
-        <div class="section-heading">
-          <h2>Products</h2>
-          <p id="productCount">0 products</p>
+    <aside id="cart" class="cart-panel">
+      <div class="cart-header">
+        <div>
+          <p class="eyebrow">Your Cart</p>
+          <h2>Order Summary</h2>
         </div>
 
-        <div id="productsGrid" class="products-grid"></div>
+        <button id="clearCartButton" class="clear-button" type="button">
+          Clear Cart
+        </button>
+      </div>
 
-        <div id="emptyProducts" class="empty-state hidden">
-          <h3>No products found</h3>
-          <p>Try a different search or category.</p>
-        </div>
-      </section>
+      <div id="cartItems" class="cart-items"></div>
 
-      <aside id="cartPanel" class="cart-panel">
-        <div class="cart-header">
-          <div>
-            <h2>Your Cart</h2>
-            <p id="cartMessage">No items yet.</p>
-          </div>
-
-          <button id="clearCartButton" class="danger-button" type="button">Clear</button>
+      <div class="cart-totals">
+        <div>
+          <span>Subtotal</span>
+          <strong id="subtotalText">$0.00</strong>
         </div>
 
-        <div id="cartItems" class="cart-items"></div>
-
-        <div class="cart-total">
-          <p>Total</p>
-          <h3 id="cartTotal">$0.00</h3>
+        <div>
+          <span>Tax 6.5%</span>
+          <strong id="taxText">$0.00</strong>
         </div>
 
-        <button id="checkoutButton" class="checkout-button" type="button">Checkout Demo</button>
-      </aside>
-    </section>
+        <div class="total-line">
+          <span>Total</span>
+          <strong id="totalText">$0.00</strong>
+        </div>
+      </div>
+
+      <form id="checkoutForm" class="checkout-form">
+        <h3 id="checkout">Pickup Details</h3>
+
+        <label for="customerName">Name</label>
+        <input
+          id="customerName"
+          type="text"
+          placeholder="Enter your name"
+          required
+        />
+
+        <label for="customerPhone">Phone</label>
+        <input
+          id="customerPhone"
+          type="tel"
+          placeholder="(555) 123-4567"
+          required
+        />
+
+        <label for="pickupTime">Pickup Time</label>
+        <select id="pickupTime" required>
+          <option value="">Choose pickup time</option>
+          <option>Today, 5:30 PM</option>
+          <option>Today, 6:00 PM</option>
+          <option>Today, 6:30 PM</option>
+          <option>Today, 7:00 PM</option>
+          <option>Today, 7:30 PM</option>
+          <option>Today, 8:00 PM</option>
+        </select>
+
+        <label for="orderNotes">Special Instructions</label>
+        <textarea
+          id="orderNotes"
+          rows="4"
+          placeholder="No onions, extra sauce, allergies, etc."
+        ></textarea>
+
+        <button class="checkout-button" type="submit">
+          Place Pickup Order
+        </button>
+      </form>
+    </aside>
   </main>
+
+  <section class="trust-row">
+    <article>
+      <span>🔥</span>
+      <h3>Made Fresh</h3>
+      <p>Every item is prepared after ordering.</p>
+    </article>
+
+    <article>
+      <span>⏱️</span>
+      <h3>Fast Pickup</h3>
+      <p>Choose a pickup time that works for you.</p>
+    </article>
+
+    <article>
+      <span>🛒</span>
+      <h3>Easy Cart</h3>
+      <p>Update quantities and totals instantly.</p>
+    </article>
+  </section>
+
+  <div id="successModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-icon">✅</div>
+      <h2>Order Placed</h2>
+      <p id="successMessage"></p>
+      <button id="closeModalButton" type="button">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>QuickBite Store — Restaurant Online Store Demo</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
