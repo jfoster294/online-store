@@ -45,6 +45,12 @@ textarea {
 button {
   border: 0;
   cursor: pointer;
+  appearance: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 input,
@@ -86,6 +92,68 @@ textarea:focus {
   opacity: 0.35;
   z-index: -1;
 }
+
+/* Global button fixes */
+
+.nav-button,
+.logout-button,
+.demo-button,
+.secondary-action,
+.primary-action,
+.add-button,
+.qty-button,
+.remove-button,
+.edit-menu-button,
+.delete-menu-button,
+.cart-header button,
+.checkout-header button,
+.login-form button,
+.manager-menu-actions button,
+.upload-info button,
+.menu-form-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.primary-action,
+.login-form button {
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--copper-light), var(--copper));
+  color: #1b1009;
+  font-weight: 900;
+}
+
+.secondary-action,
+.demo-button,
+.logout-button,
+.cart-header button,
+.checkout-header button {
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.logout-button {
+  min-width: 112px;
+}
+
+.admin-actions .primary-action,
+.admin-actions .secondary-action {
+  width: fit-content;
+}
+
+/* Auth page */
 
 .auth-view {
   min-height: 100vh;
@@ -151,15 +219,6 @@ textarea:focus {
   font-weight: 800;
 }
 
-.login-form button,
-.primary-action {
-  min-height: 48px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--copper-light), var(--copper));
-  color: #1b1009;
-  font-weight: 900;
-}
-
 .login-message {
   min-height: 22px;
   color: var(--copper-light);
@@ -173,32 +232,6 @@ textarea:focus {
   margin: 14px 0;
 }
 
-.demo-button,
-.secondary-action,
-.logout-button,
-.cart-header button,
-.checkout-header button {
-  min-height: 44px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.055);
-  color: var(--text);
-  font-weight: 800;
-}
-
-.demo-button,
-.secondary-action,
-.logout-button,
-.cart-header button,
-.checkout-header button,
-.primary-action,
-.login-form button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
 .credentials {
   border-top: 1px solid var(--border);
   padding-top: 14px;
@@ -206,6 +239,8 @@ textarea:focus {
   font-size: 0.9rem;
   line-height: 1.7;
 }
+
+/* App header */
 
 .app-header {
   position: sticky;
@@ -255,19 +290,14 @@ textarea:focus {
 }
 
 .nav-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   min-height: 56px;
-  padding: 0 28px;
-  line-height: 1;
-  white-space: nowrap;
-  text-align: center;
-  border-radius: 14px;
+  padding: 0 30px;
+  border-radius: 16px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.055);
   color: var(--text);
-  font-weight: 800;
+  font-weight: 900;
+  font-size: 1rem;
 }
 
 .nav-button.active {
@@ -299,6 +329,8 @@ textarea:focus {
 .view.active {
   display: block;
 }
+
+/* Shared panels */
 
 .hero,
 .cart-card,
@@ -359,6 +391,8 @@ textarea:focus {
   font-weight: 900;
   margin-bottom: 8px;
 }
+
+/* Menu */
 
 .menu-grid {
   display: grid;
@@ -423,16 +457,12 @@ textarea:focus {
 }
 
 .add-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
+  min-height: 44px;
+  padding: 0 18px;
   border-radius: 12px;
-  padding: 0 16px;
   background: var(--copper-light);
   color: #1b1009;
   font-weight: 900;
-  white-space: nowrap;
 }
 
 .food-photo {
@@ -440,6 +470,8 @@ textarea:focus {
   height: 150px;
   object-fit: cover;
 }
+
+/* Cart */
 
 .section-heading {
   margin-bottom: 18px;
@@ -522,12 +554,13 @@ textarea:focus {
 }
 
 .qty-button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 10px;
   color: #1b1009;
   background: var(--copper-light);
   font-weight: 900;
+  padding: 0;
 }
 
 .remove-button {
@@ -535,6 +568,7 @@ textarea:focus {
   background: transparent;
   color: var(--copper-light);
   font-weight: 900;
+  padding: 6px 0;
 }
 
 .summary-card {
@@ -558,6 +592,8 @@ textarea:focus {
   width: 100%;
   margin-top: 16px;
 }
+
+/* Admin dashboard */
 
 .stats-grid {
   display: grid;
@@ -644,6 +680,8 @@ textarea:focus {
   flex-wrap: wrap;
 }
 
+/* Tables */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -670,6 +708,8 @@ th {
 .status-select {
   min-width: 140px;
 }
+
+/* Menu manager */
 
 .menu-manager-layout {
   display: grid;
@@ -773,11 +813,10 @@ th {
 }
 
 .manager-menu-actions button {
-  min-height: 40px;
+  min-height: 42px;
   border-radius: 12px;
-  padding: 0 14px;
+  padding: 0 16px;
   font-weight: 900;
-  white-space: nowrap;
 }
 
 .edit-menu-button {
@@ -790,6 +829,8 @@ th {
   color: var(--text);
   border: 1px solid rgba(255, 214, 165, 0.18);
 }
+
+/* Invoice */
 
 .invoice-preview {
   background: #fff7ed;
@@ -807,6 +848,8 @@ th {
   border-bottom: 1px solid #ead4bd;
   padding: 8px 0;
 }
+
+/* Uploads */
 
 .drop-zone {
   min-height: 230px;
@@ -876,7 +919,10 @@ th {
   color: var(--copper-light);
   background: transparent;
   font-weight: 900;
+  padding: 8px 0;
 }
+
+/* Checkout modal */
 
 .modal {
   position: fixed;
@@ -947,6 +993,8 @@ th {
   display: grid;
   gap: 9px;
 }
+
+/* Toast */
 
 .toast {
   position: fixed;
@@ -1052,13 +1100,17 @@ th {
   }
 
   .checkout-header,
-  .checkout-actions {
+  .checkout-actions,
+  .admin-actions {
     flex-direction: column;
   }
 
   .primary-action,
   .secondary-action,
-  .nav-button {
+  .nav-button,
+  .logout-button,
+  .admin-actions .primary-action,
+  .admin-actions .secondary-action {
     width: 100%;
   }
 
