@@ -80,8 +80,8 @@ textarea:focus {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 48px 48px;
   opacity: 0.35;
   z-index: -1;
@@ -176,7 +176,6 @@ textarea:focus {
 .demo-button,
 .secondary-action,
 .logout-button,
-.nav-button,
 .cart-header button,
 .checkout-header button {
   min-height: 44px;
@@ -185,6 +184,19 @@ textarea:focus {
   background: rgba(255, 255, 255, 0.055);
   color: var(--text);
   font-weight: 800;
+}
+
+.demo-button,
+.secondary-action,
+.logout-button,
+.cart-header button,
+.checkout-header button,
+.primary-action,
+.login-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .credentials {
@@ -238,8 +250,24 @@ textarea:focus {
 .app-nav {
   display: flex;
   justify-content: center;
-  gap: 9px;
+  gap: 14px;
   flex-wrap: wrap;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 28px;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--text);
+  font-weight: 800;
 }
 
 .nav-button.active {
@@ -252,9 +280,10 @@ textarea:focus {
   place-items: center;
   min-width: 24px;
   height: 24px;
-  margin-left: 4px;
+  margin-left: 8px;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.16);
+  flex-shrink: 0;
 }
 
 .main-shell {
@@ -391,11 +420,16 @@ textarea:focus {
 }
 
 .add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 0 16px;
   background: var(--copper-light);
   color: #1b1009;
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .section-heading {
@@ -423,6 +457,7 @@ textarea:focus {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 14px;
+  gap: 12px;
 }
 
 .cart-items {
@@ -590,6 +625,7 @@ textarea:focus {
   display: flex;
   gap: 12px;
   margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
 table {
@@ -874,7 +910,12 @@ th {
   }
 
   .primary-action,
-  .secondary-action {
+  .secondary-action,
+  .nav-button {
+    width: 100%;
+  }
+
+  .app-nav {
     width: 100%;
   }
 }
