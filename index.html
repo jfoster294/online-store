@@ -4,210 +4,400 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Restaurant Online Store | QuickBite</title>
+  <title>SmokeHouse OS | BBQ Restaurant System</title>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <nav class="navbar">
-      <div class="logo-area">
-        <div class="logo-icon">🍔</div>
-        <div>
-          <h1>QuickBite Store</h1>
-          <p>Restaurant online ordering</p>
-        </div>
-      </div>
+  <div class="page-glow"></div>
 
-      <div class="nav-actions">
-        <a href="#menu">Menu</a>
-        <a href="#cart">Cart</a>
-        <a href="#checkout">Checkout</a>
+  <section id="authView" class="auth-view">
+    <div class="auth-card">
+      <div class="brand-mark">🔥</div>
 
-        <button id="cartJumpButton" class="cart-jump-button" type="button">
-          Cart <span id="navCartCount">0</span>
-        </button>
-      </div>
-    </nav>
+      <p class="eyebrow">Premium BBQ Restaurant System</p>
+      <h1>SmokeHouse OS</h1>
 
-    <section class="hero">
-      <div class="hero-content">
-        <p class="eyebrow">Fresh Meals • Simple Ordering • Fast Pickup</p>
-        <h2>Order your favorite restaurant meals online.</h2>
-        <p>
-          Browse the menu, add items to your cart, choose a pickup time,
-          and place a demo order in just a few clicks.
-        </p>
+      <p class="auth-copy">
+        Customer ordering, multi-step checkout, admin analytics, invoices,
+        order management, and file upload previews in one front-end app.
+      </p>
 
-        <div class="hero-buttons">
-          <a href="#menu" class="primary-link">Shop Menu</a>
-          <a href="#cart" class="secondary-link">View Cart</a>
-        </div>
-      </div>
+      <form id="loginForm" class="login-form">
+        <label for="emailInput">Email</label>
+        <input id="emailInput" type="email" placeholder="admin@test.com" required />
 
-      <div class="hero-card">
-        <div class="hero-food">🍟</div>
-        <h3>Today’s Favorite</h3>
-        <p>Loaded fries, burgers, tacos, bowls, drinks, and desserts.</p>
-      </div>
-    </section>
-  </header>
+        <label for="passwordInput">Password</label>
+        <input id="passwordInput" type="password" placeholder="admin123" required />
 
-  <main class="main-layout">
-    <section id="menu" class="store-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Online Store</p>
-          <h2>Shop The Menu</h2>
-        </div>
+        <button type="submit">Login</button>
 
-        <p class="section-note">
-          Search, filter, and add meals to your cart.
-        </p>
-      </div>
-
-      <div class="store-controls">
-        <div class="search-box">
-          <span>🔎</span>
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="Search burgers, tacos, drinks..."
-          />
-        </div>
-
-        <select id="categoryFilter">
-          <option value="All">All Categories</option>
-          <option value="Combos">Combos</option>
-          <option value="Burgers">Burgers</option>
-          <option value="Tacos">Tacos</option>
-          <option value="Bowls">Bowls</option>
-          <option value="Sides">Sides</option>
-          <option value="Drinks">Drinks</option>
-          <option value="Desserts">Desserts</option>
-        </select>
-
-        <select id="sortSelect">
-          <option value="popular">Sort: Popular</option>
-          <option value="priceLow">Price: Low to High</option>
-          <option value="priceHigh">Price: High to Low</option>
-          <option value="nameAZ">Name: A-Z</option>
-        </select>
-      </div>
-
-      <div id="productGrid" class="product-grid"></div>
-    </section>
-
-    <aside id="cart" class="cart-panel">
-      <div class="cart-header">
-        <div>
-          <p class="eyebrow">Your Cart</p>
-          <h2>Order Summary</h2>
-        </div>
-
-        <button id="clearCartButton" class="clear-button" type="button">
-          Clear Cart
-        </button>
-      </div>
-
-      <div id="cartItems" class="cart-items"></div>
-
-      <div class="cart-totals">
-        <div>
-          <span>Subtotal</span>
-          <strong id="subtotalText">$0.00</strong>
-        </div>
-
-        <div>
-          <span>Tax 6.5%</span>
-          <strong id="taxText">$0.00</strong>
-        </div>
-
-        <div class="total-line">
-          <span>Total</span>
-          <strong id="totalText">$0.00</strong>
-        </div>
-      </div>
-
-      <form id="checkoutForm" class="checkout-form">
-        <h3 id="checkout">Pickup Details</h3>
-
-        <label for="customerName">Name</label>
-        <input
-          id="customerName"
-          type="text"
-          placeholder="Enter your name"
-          required
-        />
-
-        <label for="customerPhone">Phone</label>
-        <input
-          id="customerPhone"
-          type="tel"
-          placeholder="(555) 123-4567"
-          required
-        />
-
-        <label for="pickupTime">Pickup Time</label>
-        <select id="pickupTime" required>
-          <option value="">Choose pickup time</option>
-          <option>Today, 5:30 PM</option>
-          <option>Today, 6:00 PM</option>
-          <option>Today, 6:30 PM</option>
-          <option>Today, 7:00 PM</option>
-          <option>Today, 7:30 PM</option>
-          <option>Today, 8:00 PM</option>
-        </select>
-
-        <label for="orderNotes">Special Instructions</label>
-        <textarea
-          id="orderNotes"
-          rows="4"
-          placeholder="No onions, extra sauce, allergies, etc."
-        ></textarea>
-
-        <button class="checkout-button" type="submit">
-          Place Pickup Order
-        </button>
+        <p id="loginMessage" class="login-message"></p>
       </form>
-    </aside>
-  </main>
 
-  <section class="trust-row">
-    <article>
-      <span>🔥</span>
-      <h3>Made Fresh</h3>
-      <p>Every item is prepared after ordering.</p>
-    </article>
+      <div class="demo-logins">
+        <button class="demo-button" data-role="customer" type="button">
+          Customer Demo
+        </button>
 
-    <article>
-      <span>⏱️</span>
-      <h3>Fast Pickup</h3>
-      <p>Choose a pickup time that works for you.</p>
-    </article>
+        <button class="demo-button" data-role="admin" type="button">
+          Admin Demo
+        </button>
+      </div>
 
-    <article>
-      <span>🛒</span>
-      <h3>Easy Cart</h3>
-      <p>Update quantities and totals instantly.</p>
-    </article>
+      <div class="credentials">
+        <p><strong>Customer:</strong> customer@test.com / customer123</p>
+        <p><strong>Admin:</strong> admin@test.com / admin123</p>
+      </div>
+    </div>
   </section>
 
-  <div id="successModal" class="modal hidden">
-    <div class="modal-card">
-      <div class="modal-icon">✅</div>
-      <h2>Order Placed</h2>
-      <p id="successMessage"></p>
-      <button id="closeModalButton" type="button">
-        Close
+  <div id="appView" class="app-view hidden">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">🔥</div>
+        <div>
+          <h1>SmokeHouse OS</h1>
+          <p id="roleLabel">Restaurant System</p>
+        </div>
+      </div>
+
+      <nav id="appNav" class="app-nav">
+        <button class="nav-button customer-only active" data-view="customerStore" type="button">
+          Menu
+        </button>
+
+        <button class="nav-button customer-only" data-view="customerCart" type="button">
+          Cart <span id="cartCountBadge">0</span>
+        </button>
+
+        <button class="nav-button admin-only active" data-view="adminDashboard" type="button">
+          Dashboard
+        </button>
+
+        <button class="nav-button admin-only" data-view="adminOrders" type="button">
+          Orders
+        </button>
+
+        <button class="nav-button admin-only" data-view="adminInvoice" type="button">
+          Invoices
+        </button>
+
+        <button class="nav-button admin-only" data-view="adminUploads" type="button">
+          Uploads
+        </button>
+      </nav>
+
+      <button id="logoutButton" class="logout-button" type="button">
+        Logout
       </button>
+    </header>
+
+    <main class="main-shell">
+      <section id="customerStore" class="view customer-view active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">Premium BBQ Pickup</p>
+            <h2>Slow-smoked BBQ. Fast online ordering.</h2>
+            <p>
+              Order brisket, ribs, pulled pork, sides, drinks, and family packs
+              through a clean customer checkout flow.
+            </p>
+          </div>
+
+          <div class="hero-feature">
+            <span>Today’s Special</span>
+            <strong>Brisket Plate</strong>
+            <p>Oak-smoked brisket, two sides, house sauce.</p>
+          </div>
+        </div>
+
+        <div class="store-controls">
+          <div class="search-box">
+            <label for="searchInput">Search Menu</label>
+            <input id="searchInput" type="text" placeholder="Search brisket, ribs, sides..." />
+          </div>
+
+          <div class="filter-box">
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+              <option value="All">All Categories</option>
+              <option value="Plates">Plates</option>
+              <option value="Sandwiches">Sandwiches</option>
+              <option value="Family Packs">Family Packs</option>
+              <option value="Sides">Sides</option>
+              <option value="Drinks">Drinks</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="menuGrid" class="menu-grid"></div>
+      </section>
+
+      <section id="customerCart" class="view customer-view">
+        <div class="section-heading">
+          <p class="eyebrow">Customer Checkout</p>
+          <h2>Your BBQ Order</h2>
+          <p>Review your tray before starting the multi-step checkout.</p>
+        </div>
+
+        <div class="cart-layout">
+          <div class="cart-card">
+            <div class="cart-header">
+              <h3>Cart Items</h3>
+              <button id="clearCartButton" type="button">Clear Cart</button>
+            </div>
+
+            <div id="cartItems" class="cart-items"></div>
+          </div>
+
+          <aside class="summary-card">
+            <h3>Order Summary</h3>
+
+            <div class="summary-line">
+              <span>Subtotal</span>
+              <strong id="subtotalText">$0.00</strong>
+            </div>
+
+            <div class="summary-line">
+              <span>Tax 6.5%</span>
+              <strong id="taxText">$0.00</strong>
+            </div>
+
+            <div class="summary-line total-line">
+              <span>Total</span>
+              <strong id="totalText">$0.00</strong>
+            </div>
+
+            <button id="startCheckoutButton" class="primary-action" type="button">
+              Start Checkout
+            </button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="adminDashboard" class="view admin-view">
+        <div class="section-heading">
+          <p class="eyebrow">Admin Dashboard</p>
+          <h2>SmokeHouse Analytics</h2>
+          <p>Track revenue, orders, best sellers, and category performance.</p>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Total Revenue</span>
+            <strong id="adminRevenue">$0.00</strong>
+            <p>All completed orders</p>
+          </article>
+
+          <article class="stat-card">
+            <span>Total Orders</span>
+            <strong id="adminOrderCount">0</strong>
+            <p>Orders in the system</p>
+          </article>
+
+          <article class="stat-card">
+            <span>Average Order</span>
+            <strong id="adminAverageOrder">$0.00</strong>
+            <p>Average customer spend</p>
+          </article>
+
+          <article class="stat-card">
+            <span>Best Seller</span>
+            <strong id="adminBestSeller">None</strong>
+            <p>Top item by quantity</p>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel-card">
+            <div class="panel-header">
+              <h3>Revenue by Day</h3>
+            </div>
+
+            <div id="revenueBars" class="bar-chart"></div>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-header">
+              <h3>Orders by Category</h3>
+            </div>
+
+            <div id="categoryBars" class="horizontal-chart"></div>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-header">
+              <h3>Top Items</h3>
+            </div>
+
+            <div id="topItemsList" class="top-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="adminOrders" class="view admin-view">
+        <div class="section-heading">
+          <p class="eyebrow">Order Management</p>
+          <h2>All Orders</h2>
+          <p>View customer orders, update status, and export order data.</p>
+        </div>
+
+        <div class="admin-actions">
+          <button id="exportOrdersButton" class="secondary-action" type="button">
+            Export Orders CSV
+          </button>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Pickup</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="adminInvoice" class="view admin-view">
+        <div class="section-heading">
+          <p class="eyebrow">Invoice Generator</p>
+          <h2>Order Receipt</h2>
+          <p>Select an order and generate a clean printable receipt.</p>
+        </div>
+
+        <div class="invoice-layout">
+          <div class="panel-card">
+            <label for="invoiceSelect">Choose Order</label>
+            <select id="invoiceSelect"></select>
+
+            <button id="printInvoiceButton" class="primary-action" type="button">
+              Print Invoice
+            </button>
+          </div>
+
+          <div id="invoicePreview" class="invoice-preview"></div>
+        </div>
+      </section>
+
+      <section id="adminUploads" class="view admin-view">
+        <div class="section-heading">
+          <p class="eyebrow">File Upload Preview</p>
+          <h2>Admin Uploads</h2>
+          <p>Preview menu images, receipts, vendor invoices, or documents before upload.</p>
+        </div>
+
+        <div id="dropZone" class="drop-zone">
+          <input id="fileInput" type="file" multiple hidden />
+          <div>
+            <strong>Drag files here</strong>
+            <p>or click to browse files</p>
+          </div>
+        </div>
+
+        <div class="admin-actions">
+          <button id="clearUploadsButton" class="secondary-action" type="button">
+            Clear Uploads
+          </button>
+
+          <button id="fakeUploadButton" class="primary-action" type="button">
+            Mark Files Ready
+          </button>
+        </div>
+
+        <div id="uploadList" class="upload-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="checkoutModal" class="modal hidden">
+    <div class="checkout-card">
+      <div class="checkout-header">
+        <div>
+          <p class="eyebrow">Multi-Step Checkout</p>
+          <h2>Place Pickup Order</h2>
+        </div>
+
+        <button id="closeCheckoutButton" type="button">Close</button>
+      </div>
+
+      <div class="step-track">
+        <span class="step-dot active" data-step-dot="1">1</span>
+        <span class="step-dot" data-step-dot="2">2</span>
+        <span class="step-dot" data-step-dot="3">3</span>
+      </div>
+
+      <form id="checkoutForm">
+        <div class="checkout-step active" data-step="1">
+          <h3>Customer Info</h3>
+
+          <label for="customerName">Name</label>
+          <input id="customerName" type="text" placeholder="Your name" required />
+
+          <label for="customerPhone">Phone</label>
+          <input id="customerPhone" type="tel" placeholder="(555) 123-4567" required />
+
+          <label for="customerEmail">Email</label>
+          <input id="customerEmail" type="email" placeholder="you@email.com" required />
+        </div>
+
+        <div class="checkout-step" data-step="2">
+          <h3>Pickup Details</h3>
+
+          <label for="pickupTime">Pickup Time</label>
+          <select id="pickupTime" required>
+            <option value="">Choose pickup time</option>
+            <option>Today, 5:30 PM</option>
+            <option>Today, 6:00 PM</option>
+            <option>Today, 6:30 PM</option>
+            <option>Today, 7:00 PM</option>
+            <option>Today, 7:30 PM</option>
+            <option>Today, 8:00 PM</option>
+          </select>
+
+          <label for="orderType">Order Type</label>
+          <select id="orderType" required>
+            <option>Pickup</option>
+            <option>Dine-In</option>
+          </select>
+
+          <label for="orderNotes">Special Instructions</label>
+          <textarea id="orderNotes" rows="4" placeholder="Extra sauce, no onions, allergies, etc."></textarea>
+        </div>
+
+        <div class="checkout-step" data-step="3">
+          <h3>Review Order</h3>
+          <div id="checkoutReview" class="checkout-review"></div>
+        </div>
+
+        <div class="checkout-actions">
+          <button id="prevStepButton" class="secondary-action" type="button">
+            Back
+          </button>
+
+          <button id="nextStepButton" class="primary-action" type="button">
+            Continue
+          </button>
+
+          <button id="placeOrderButton" class="primary-action hidden" type="submit">
+            Place Order
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <footer class="footer">
-    <p>QuickBite Store — Restaurant Online Store Demo</p>
-  </footer>
+  <div id="toast" class="toast"></div>
 
   <script src="script.js"></script>
 </body>
-</html>
+</html> 
