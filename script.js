@@ -1,6 +1,7 @@
 const TAX_RATE = 0.065;
 const CART_KEY = "smokehouseCart";
 const ORDERS_KEY = "smokehouseOrders";
+const MENU_KEY = "smokehouseMenuItems";
 
 const users = {
   customer: {
@@ -17,13 +18,14 @@ const users = {
   }
 };
 
-const menuItems = [
+const defaultMenuItems = [
   {
     id: 1,
     name: "Brisket Plate",
     category: "Plates",
     price: 18.99,
     icon: "🥩",
+    image: "",
     description: "Oak-smoked brisket, two sides, pickles, onions, and house BBQ sauce."
   },
   {
@@ -32,6 +34,7 @@ const menuItems = [
     category: "Plates",
     price: 26.99,
     icon: "🍖",
+    image: "",
     description: "Tender smoked ribs glazed with house sauce and served with two sides."
   },
   {
@@ -40,6 +43,7 @@ const menuItems = [
     category: "Sandwiches",
     price: 12.99,
     icon: "🥪",
+    image: "",
     description: "Pulled pork, slaw, pickles, and smoky BBQ sauce on a toasted bun."
   },
   {
@@ -48,6 +52,7 @@ const menuItems = [
     category: "Plates",
     price: 16.99,
     icon: "🍗",
+    image: "",
     description: "Half smoked chicken with two sides and Alabama white sauce."
   },
   {
@@ -56,6 +61,7 @@ const menuItems = [
     category: "Plates",
     price: 19.99,
     icon: "🔥",
+    image: "",
     description: "Caramelized brisket burnt ends over mac and cheese with crispy onions."
   },
   {
@@ -64,6 +70,7 @@ const menuItems = [
     category: "Family Packs",
     price: 54.99,
     icon: "🍽️",
+    image: "",
     description: "Brisket, ribs, pulled pork, four sides, sauces, and buns."
   },
   {
@@ -72,6 +79,7 @@ const menuItems = [
     category: "Sides",
     price: 5.99,
     icon: "🧀",
+    image: "",
     description: "Creamy smoked gouda mac and cheese."
   },
   {
@@ -80,6 +88,7 @@ const menuItems = [
     category: "Sides",
     price: 4.99,
     icon: "🥣",
+    image: "",
     description: "Slow-cooked BBQ beans with brisket bits."
   },
   {
@@ -88,6 +97,7 @@ const menuItems = [
     category: "Drinks",
     price: 3.49,
     icon: "🥤",
+    image: "",
     description: "Cold Southern sweet tea with lemon."
   },
   {
@@ -96,10 +106,12 @@ const menuItems = [
     category: "Desserts",
     price: 5.99,
     icon: "🍌",
+    image: "",
     description: "Classic banana pudding with wafers and whipped cream."
   }
 ];
 
+let menuItems = loadMenuItems();
 let cart = loadCart();
 let orders = loadOrders();
 let currentRole = null;
@@ -160,6 +172,18 @@ const invoiceSelect = document.getElementById("invoiceSelect");
 const invoicePreview = document.getElementById("invoicePreview");
 const printInvoiceButton = document.getElementById("printInvoiceButton");
 
+const menuManagerForm = document.getElementById("menuManagerForm");
+const menuItemIdInput = document.getElementById("menuItemIdInput");
+const menuNameInput = document.getElementById("menuNameInput");
+const menuCategoryInput = document.getElementById("menuCategoryInput");
+const menuPriceInput = document.getElementById("menuPriceInput");
+const menuDescriptionInput = document.getElementById("menuDescriptionInput");
+const menuImageInput = document.getElementById("menuImageInput");
+const menuImagePreview = document.getElementById("menuImagePreview");
+const saveMenuItemButton = document.getElementById("saveMenuItemButton");
+const cancelEditMenuItemButton = document.getElementById("cancelEditMenuItemButton");
+const menuManagerList = document.getElementById("menuManagerList");
+
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
 const uploadList = document.getElementById("uploadList");
@@ -204,9 +228,7 @@ clearCartButton.addEventListener("click", () => {
 cartItems.addEventListener("click", (event) => {
   const button = event.target.closest("button");
 
-  if (!button) {
-    return;
-  }
+  if (!button) return;
 
   const id = Number(button.dataset.id);
   const action = button.dataset.action;
@@ -239,9 +261,7 @@ prevStepButton.addEventListener("click", () => {
 });
 
 nextStepButton.addEventListener("click", () => {
-  if (!validateCurrentStep()) {
-    return;
-  }
+  if (!validateCurrentStep()) return;
 
   if (checkoutStep < 3) {
     checkoutStep += 1;
@@ -297,16 +317,12 @@ checkoutForm.addEventListener("submit", (event) => {
 });
 
 ordersTableBody.addEventListener("change", (event) => {
-  if (!event.target.classList.contains("status-select")) {
-    return;
-  }
+  if (!event.target.classList.contains("status-select")) return;
 
   const orderId = event.target.dataset.id;
   const order = orders.find((item) => item.id === orderId);
 
-  if (!order) {
-    return;
-  }
+  if (!order) return;
 
   order.status = event.target.value;
   saveOrders();
@@ -320,6 +336,32 @@ invoiceSelect.addEventListener("change", renderInvoice);
 printInvoiceButton.addEventListener("click", () => {
   window.print();
 });
+
+if (menuManagerForm) {
+  menuManagerForm.addEventListener("submit", handleMenuItemSave);
+}
+
+if (cancelEditMenuItemButton) {
+  cancelEditMenuItemButton.addEventListener("click", resetMenuManagerForm);
+}
+
+if (menuImageInput) {
+  menuImageInput.addEventListener("change", previewSelectedMenuImage);
+}
+
+if (menuManagerList) {
+  menuManagerList.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    const id = Number(button.dataset.id);
+    const action = button.dataset.action;
+
+    if (action === "edit") editMenuItem(id);
+    if (action === "delete") deleteMenuItem(id);
+  });
+}
 
 dropZone.addEventListener("click", () => {
   fileInput.click();
@@ -362,9 +404,7 @@ fakeUploadButton.addEventListener("click", () => {
 uploadList.addEventListener("click", (event) => {
   const button = event.target.closest("button");
 
-  if (!button) {
-    return;
-  }
+  if (!button) return;
 
   const id = button.dataset.id;
   uploadFiles = uploadFiles.filter((item) => item.id !== id);
@@ -428,6 +468,10 @@ function showView(viewId) {
     renderAdmin();
   }
 
+  if (viewId === "adminMenu") {
+    renderMenuManager();
+  }
+
   if (viewId === "customerCart") {
     renderCart();
   }
@@ -461,16 +505,20 @@ function renderMenu() {
     const card = document.createElement("article");
     card.className = "menu-card";
 
+    const imageContent = item.image
+      ? `<img class="food-photo" src="${item.image}" alt="${escapeHTML(item.name)}" />`
+      : item.icon || "🔥";
+
     card.innerHTML = `
-      <div class="menu-image">${item.icon}</div>
+      <div class="menu-image">${imageContent}</div>
 
       <div class="menu-content">
-        <span class="menu-tag">${item.category}</span>
-        <h3>${item.name}</h3>
-        <p>${item.description}</p>
+        <span class="menu-tag">${escapeHTML(item.category)}</span>
+        <h3>${escapeHTML(item.name)}</h3>
+        <p>${escapeHTML(item.description)}</p>
 
         <div class="menu-footer">
-          <span class="price">$${item.price.toFixed(2)}</span>
+          <span class="price">$${Number(item.price).toFixed(2)}</span>
           <button class="add-button" data-id="${item.id}" type="button">
             Add
           </button>
@@ -540,17 +588,24 @@ function renderCart() {
 
   cart.forEach((entry) => {
     const item = menuItems.find((menuItem) => menuItem.id === entry.id);
+
+    if (!item) return;
+
     const lineTotal = item.price * entry.quantity;
+
+    const imageContent = item.image
+      ? `<img src="${item.image}" alt="${escapeHTML(item.name)}" />`
+      : item.icon || "🔥";
 
     const cartItem = document.createElement("div");
     cartItem.className = "cart-item";
 
     cartItem.innerHTML = `
-      <div class="cart-item-icon">${item.icon}</div>
+      <div class="cart-item-icon">${imageContent}</div>
 
       <div>
-        <h4>${item.name}</h4>
-        <small>$${item.price.toFixed(2)} each</small>
+        <h4>${escapeHTML(item.name)}</h4>
+        <small>$${Number(item.price).toFixed(2)} each</small>
 
         <div class="qty-controls">
           <button class="qty-button" data-action="decrease" data-id="${item.id}" type="button">-</button>
@@ -581,6 +636,7 @@ function renderCart() {
 function getCartTotals() {
   const subtotal = cart.reduce((sum, entry) => {
     const item = menuItems.find((menuItem) => menuItem.id === entry.id);
+    if (!item) return sum;
     return sum + item.price * entry.quantity;
   }, 0);
 
@@ -592,6 +648,173 @@ function getCartTotals() {
 
 function getCartCount() {
   return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function handleMenuItemSave(event) {
+  event.preventDefault();
+
+  const editingId = menuItemIdInput.value ? Number(menuItemIdInput.value) : null;
+  const existingItem = menuItems.find((item) => item.id === editingId);
+
+  const file = menuImageInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      saveMenuItem(reader.result, editingId, existingItem);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    saveMenuItem(existingItem ? existingItem.image : "", editingId, existingItem);
+  }
+}
+
+function saveMenuItem(imageData, editingId, existingItem) {
+  const itemData = {
+    id: editingId || Date.now(),
+    name: menuNameInput.value.trim(),
+    category: menuCategoryInput.value,
+    price: Number(menuPriceInput.value),
+    icon: existingItem ? existingItem.icon || "🔥" : "🔥",
+    image: imageData || "",
+    description: menuDescriptionInput.value.trim()
+  };
+
+  if (editingId) {
+    menuItems = menuItems.map((item) => {
+      return item.id === editingId ? itemData : item;
+    });
+
+    showToast("Menu item updated.");
+  } else {
+    menuItems.unshift(itemData);
+    showToast("Menu item added.");
+  }
+
+  saveMenuItems();
+  resetMenuManagerForm();
+  renderMenu();
+  renderMenuManager();
+}
+
+function renderMenuManager() {
+  if (!menuManagerList) return;
+
+  menuManagerList.innerHTML = "";
+
+  if (menuItems.length === 0) {
+    menuManagerList.innerHTML = `
+      <div class="empty-state">No menu items yet.</div>
+    `;
+    return;
+  }
+
+  menuItems.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "manager-menu-card";
+
+    const preview = item.image
+      ? `<img src="${item.image}" alt="${escapeHTML(item.name)}" />`
+      : item.icon || "🔥";
+
+    card.innerHTML = `
+      <div class="manager-menu-preview">${preview}</div>
+
+      <div>
+        <h4>${escapeHTML(item.name)}</h4>
+        <p>${escapeHTML(item.description)}</p>
+
+        <div class="manager-menu-meta">
+          <span>${escapeHTML(item.category)}</span>
+          <span>$${Number(item.price).toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div class="manager-menu-actions">
+        <button class="edit-menu-button" data-action="edit" data-id="${item.id}" type="button">
+          Edit
+        </button>
+
+        <button class="delete-menu-button" data-action="delete" data-id="${item.id}" type="button">
+          Delete
+        </button>
+      </div>
+    `;
+
+    menuManagerList.appendChild(card);
+  });
+}
+
+function editMenuItem(id) {
+  const item = menuItems.find((menuItem) => menuItem.id === id);
+
+  if (!item) return;
+
+  menuItemIdInput.value = item.id;
+  menuNameInput.value = item.name;
+  menuCategoryInput.value = item.category;
+  menuPriceInput.value = item.price;
+  menuDescriptionInput.value = item.description;
+
+  if (item.image) {
+    menuImagePreview.innerHTML = `<img src="${item.image}" alt="${escapeHTML(item.name)}" />`;
+  } else {
+    menuImagePreview.textContent = "No image selected";
+  }
+
+  saveMenuItemButton.textContent = "Update Menu Item";
+  cancelEditMenuItemButton.classList.remove("hidden");
+
+  showToast("Editing menu item.");
+}
+
+function deleteMenuItem(id) {
+  const item = menuItems.find((menuItem) => menuItem.id === id);
+
+  if (!item) return;
+
+  const confirmed = confirm(`Delete ${item.name} from the menu?`);
+
+  if (!confirmed) return;
+
+  menuItems = menuItems.filter((menuItem) => menuItem.id !== id);
+  cart = cart.filter((cartItem) => cartItem.id !== id);
+
+  saveMenuItems();
+  saveCart();
+
+  renderMenu();
+  renderCart();
+  renderMenuManager();
+
+  showToast("Menu item deleted.");
+}
+
+function resetMenuManagerForm() {
+  menuManagerForm.reset();
+  menuItemIdInput.value = "";
+  menuImagePreview.textContent = "No image selected";
+  saveMenuItemButton.textContent = "Add Menu Item";
+  cancelEditMenuItemButton.classList.add("hidden");
+}
+
+function previewSelectedMenuImage() {
+  const file = menuImageInput.files[0];
+
+  if (!file) {
+    menuImagePreview.textContent = "No image selected";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    menuImagePreview.innerHTML = `<img src="${reader.result}" alt="Menu item preview" />`;
+  };
+
+  reader.readAsDataURL(file);
 }
 
 function updateCheckoutStep() {
@@ -646,6 +869,8 @@ function renderCheckoutReview() {
 
     ${cart.map((entry) => {
       const item = menuItems.find((menuItem) => menuItem.id === entry.id);
+      if (!item) return "";
+
       return `
         <div class="summary-line">
           <span>${escapeHTML(item.name)} x${entry.quantity}</span>
@@ -970,6 +1195,24 @@ function downloadFile(filename, content, type) {
 
 function createOrderId() {
   return `SH-${1000 + orders.length + 1}`;
+}
+
+function saveMenuItems() {
+  localStorage.setItem(MENU_KEY, JSON.stringify(menuItems));
+}
+
+function loadMenuItems() {
+  const saved = localStorage.getItem(MENU_KEY);
+
+  if (!saved) {
+    return [...defaultMenuItems];
+  }
+
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return [...defaultMenuItems];
+  }
 }
 
 function saveCart() {
