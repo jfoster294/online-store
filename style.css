@@ -474,7 +474,7 @@ textarea:focus {
 /* Cart */
 
 .section-heading {
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .cart-layout,
@@ -489,7 +489,7 @@ textarea:focus {
 .panel-card,
 .table-card,
 .invoice-preview {
-  padding: 18px;
+  padding: 24px;
 }
 
 .cart-header,
@@ -497,7 +497,7 @@ textarea:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
   gap: 12px;
 }
 
@@ -676,7 +676,8 @@ textarea:focus {
 .admin-actions {
   display: flex;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-top: 18px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
@@ -747,6 +748,7 @@ th {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .manager-menu-list {
@@ -832,6 +834,26 @@ th {
 
 /* Invoice */
 
+.invoice-layout {
+  align-items: start;
+}
+
+.invoice-layout .panel-card {
+  min-height: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.invoice-layout .panel-card select {
+  margin-bottom: 8px;
+}
+
+.invoice-layout .panel-card .primary-action {
+  width: fit-content;
+  min-width: 170px;
+  margin-top: 8px;
+}
+
 .invoice-preview {
   background: #fff7ed;
   color: #1d120b;
@@ -852,12 +874,13 @@ th {
 /* Uploads */
 
 .drop-zone {
-  min-height: 230px;
+  min-height: 250px;
   display: grid;
   place-items: center;
   text-align: center;
   border-style: dashed;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .drop-zone.dragging {
@@ -872,6 +895,12 @@ th {
 
 .drop-zone p {
   color: var(--muted);
+}
+
+#adminUploads .admin-actions {
+  margin-top: 0;
+  margin-bottom: 24px;
+  padding-left: 8px;
 }
 
 .upload-grid {
@@ -1110,11 +1139,16 @@ th {
   .nav-button,
   .logout-button,
   .admin-actions .primary-action,
-  .admin-actions .secondary-action {
+  .admin-actions .secondary-action,
+  .invoice-layout .panel-card .primary-action {
     width: 100%;
   }
 
   .app-nav {
     width: 100%;
+  }
+
+  #adminUploads .admin-actions {
+    padding-left: 0;
   }
 }
