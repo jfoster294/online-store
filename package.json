@@ -1,0 +1,19 @@
+{
+  "name": "smokehouse-os-react",
+  "version": "1.0.0",
+  "private": true,
+  "description": "React restaurant ordering and admin dashboard app.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {}
+}
