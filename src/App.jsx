@@ -264,7 +264,7 @@ function App() {
     setCurrentRole(null);
     setActiveView("customerStore");
     setLoginMessage("");
-  }qq
+  }
 
    function addToCart(id) {
     setCart((currentCart) => {
