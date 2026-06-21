@@ -1278,3 +1278,313 @@ th {
     max-width: none;
   }
 }
+
+
+/* ============================================================
+   CUSTOMER SIDE STYLE RESTORE
+   Paste at the very bottom of style.css
+   This brings back the darker premium BBQ customer look.
+   ============================================================ */
+
+body {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(242, 166, 90, 0.18), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(143, 36, 24, 0.2), transparent 32%),
+    linear-gradient(135deg, #070504 0%, #120c08 45%, #050302 100%);
+}
+
+/* Bigger premium customer hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  grid-template-columns: minmax(0, 1.1fr) 420px;
+  align-items: center;
+  padding: 46px;
+  border-radius: 34px;
+  background:
+    linear-gradient(135deg, rgba(10, 7, 5, 0.9), rgba(60, 26, 12, 0.72)),
+    radial-gradient(circle at top right, rgba(242, 166, 90, 0.24), transparent 35%);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2), transparent),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 0,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 80px
+    );
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h2 {
+  max-width: 760px;
+  font-size: clamp(3rem, 7vw, 6.8rem);
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.hero p {
+  max-width: 680px;
+  font-size: 1.1rem;
+  color: #d7c2a6;
+}
+
+.hero-feature {
+  min-height: 290px;
+  display: grid;
+  align-content: end;
+  border-radius: 30px;
+  padding: 28px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.72)),
+    radial-gradient(circle at 50% 20%, rgba(242, 166, 90, 0.28), transparent 45%),
+    linear-gradient(135deg, #3b170d, #120806);
+  border-color: rgba(242, 166, 90, 0.32);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.35);
+}
+
+.hero-feature span {
+  color: #ffb768;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-feature strong {
+  color: #fff1d0;
+  font-size: 2.8rem;
+  letter-spacing: -0.06em;
+}
+
+/* Cleaner customer controls */
+.store-controls {
+  padding: 18px;
+  border: 1px solid rgba(255, 214, 165, 0.16);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(12px);
+}
+
+.search-box input,
+.filter-box select {
+  min-height: 58px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* Bigger food cards */
+.menu-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.menu-card {
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    #15100c;
+  border-color: rgba(255, 214, 165, 0.18);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.48);
+}
+
+.menu-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(242, 166, 90, 0.62);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.6);
+}
+
+.menu-image {
+  min-height: 220px;
+  font-size: 5.2rem;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(242, 166, 90, 0.24), transparent 45%),
+    linear-gradient(135deg, #2c130c, #090605);
+}
+
+.food-photo {
+  height: 220px;
+}
+
+.menu-content {
+  padding: 22px;
+  gap: 14px;
+}
+
+.menu-content h3 {
+  font-size: 1.55rem;
+  letter-spacing: -0.03em;
+}
+
+.menu-content p {
+  color: #cbb9a7;
+}
+
+.menu-tag {
+  background: rgba(242, 166, 90, 0.14);
+  border: 1px solid rgba(242, 166, 90, 0.24);
+}
+
+.price {
+  color: #ffb768;
+  font-size: 1.8rem;
+}
+
+.add-button {
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffb768, #c87533);
+  color: #1a0d06;
+}
+
+/* Customer cart polish */
+.cart-layout {
+  align-items: start;
+}
+
+.cart-card,
+.summary-card {
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)),
+    #15100c;
+}
+
+.cart-item {
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.cart-item-icon {
+  background:
+    radial-gradient(circle, rgba(242, 166, 90, 0.22), transparent 70%),
+    #27120b;
+}
+
+.summary-card {
+  position: sticky;
+  top: 115px;
+}
+
+.summary-card h3 {
+  font-size: 1.7rem;
+  margin-bottom: 12px;
+}
+
+/* Fix checkout modal styling for the class names in your App.jsx */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.76);
+  backdrop-filter: blur(10px);
+}
+
+.checkout-card {
+  width: min(720px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 214, 165, 0.2);
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    #15100c;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.68);
+}
+
+.step-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 20px 20px 0;
+}
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  border: 1px solid rgba(255, 214, 165, 0.18);
+  border-radius: 999px;
+  color: #b8a999;
+  font-weight: 900;
+}
+
+.step-dot.active {
+  background: linear-gradient(135deg, #ffb768, #c87533);
+  color: #1a0d06;
+  border-color: transparent;
+}
+
+.checkout-card form {
+  padding: 20px;
+}
+
+.checkout-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.checkout-review {
+  display: grid;
+  gap: 8px;
+}
+
+/* Mobile cleanup */
+@media (max-width: 1180px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-card {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: auto;
+    padding: 26px;
+  }
+
+  .hero h2 {
+    font-size: clamp(2.7rem, 14vw, 4.2rem);
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-image,
+  .food-photo {
+    height: 210px;
+    min-height: 210px;
+  }
+
+  .checkout-actions {
+    flex-direction: column;
+  }
+
+  .checkout-actions button {
+    width: 100%;
+  }
+}
